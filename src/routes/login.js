@@ -12,8 +12,7 @@ export async function execute({ request, branch }) {
   await cookie.set('allowed', 'true', { secure: true });
  
   return new Response("Redirecting", {
-      status: Status.Found,
-      headers: mergeHeaders({ Location: request.url.origin }, cookie)
-    }
+    status: Status.Found,
+    headers: mergeHeaders({ Location: request.url.origin }, cookie)
   });
 };
