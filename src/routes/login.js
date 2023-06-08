@@ -1,6 +1,7 @@
 import {
   CookieMap,
-  mergeHeaders
+  mergeHeaders,
+  Status
 } from 'http/server.ts';
 
 export const method = "GET";
