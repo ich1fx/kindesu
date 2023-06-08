@@ -4,16 +4,26 @@ import {
   RouteBases,
   Routes
 } from 'discord_api_types/v10.ts';
+import {
+  CookieMap,
+  mergeHeaders,
+  Status
+} from 'http/server.ts';
 import * as rawConfig from '../config.js';
 
 export const method = 'GET';
 export const path = '/test';
   
-export async function execute(ctx) {
-  const isAllowed = await ctx.cookies.has('allowed');
-  if (!isAllowed) return ctx.response.redirect('/');
+export async function execute({ request, branch }) {
+  const cookie = new CookieMap(request, { secure: true });
+  const isAllowed = cookie.has('allowed');
+  if (!isAllowed) return new Response("Redirecting", {
+    status: Status.Found,
+    headers: mergeHeaders({
+      Location: request.url.origin
+    }, cookie)
+  })
     
-  const branch = ctx.request.url.host.includes('--') ? ctx.request.url.host.split('--')[1].split('.deno.dev')[0].toUpperCase() : 'PROD';
   const config = rawConfig[branch];
 
   const testRequest = await fetch(RouteBases.api + Routes.channelMessages(config.verificationChannel), {
@@ -38,5 +48,5 @@ export async function execute(ctx) {
   });
   const testResult = await testRequest.json();
 
-  ctx.response.body = JSON.stringify(testResult, null, '  ');
+  return new Response(JSON.stringify(testResult, null, '  '));
 };
