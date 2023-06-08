@@ -17,7 +17,7 @@ export async function execute({ request, branch }) {
   const isAllowed = cookie.has('allowed');
     
   if (!isAllowed) {
-    return new Response({
+    return new Response("Redirecting", {
       status: Status.Found,
       headers: {
         Location: `${request.url.origin}`
