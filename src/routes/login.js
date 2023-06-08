@@ -2,7 +2,7 @@ import {
   CookieMap,
   mergeHeaders,
   Status
-} from 'http/server.ts';
+} from 'http/mod.ts';
 
 export const method = "GET";
 export const path = `/${Deno.env.get('SECRET')}`;
