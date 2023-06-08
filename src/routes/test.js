@@ -8,7 +8,7 @@ import {
   CookieMap,
   mergeHeaders,
   Status
-} from 'http/server.ts';
+} from 'http/mod.ts';
 import * as rawConfig from '../config.js';
 
 export const method = 'GET';
