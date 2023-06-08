@@ -3,7 +3,7 @@ import {
 } from 'tweetnacl';
 import {
   Status
-} from 'http/server.ts';
+} from 'http/mod.ts';
 import * as events from '../events/mod.js';
 
 export const path = "/interaction";
