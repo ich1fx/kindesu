@@ -11,8 +11,9 @@ export async function execute({ request, branch }) {
   const cookie = new CookieMap(request, { secure: true });
   await cookie.set('allowed', 'true', { secure: true });
  
-  return new Response("Redirecting",
-    status: Status.Found,
-    headers: mergeHeaders({ Location: request.url.origin }, cookie)
+  return new Response("Redirecting", {
+      status: Status.Found,
+      headers: mergeHeaders({ Location: request.url.origin }, cookie)
+    }
   });
 };
