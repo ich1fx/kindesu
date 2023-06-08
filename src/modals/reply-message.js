@@ -7,7 +7,7 @@ import {
 
 export const custom_id = 'reply_message';
   
-export async function execute({ ctx, interaction, branch }) {
+export async function execute({ request, interaction, branch }) {
   const input = interaction.data.components[0].components[0];
     
   const replyRequest = await fetch(RouteBases.api + Routes.channelMessages(interaction.channel_id), {
@@ -23,11 +23,11 @@ export async function execute({ ctx, interaction, branch }) {
   });
   const replyResult = await replyRequest.json();
     
-  ctx.response.body = {
+  return new Response(JSON.stringify({
     type: InteractionResponseType.ChannelMessageWithSource,
     data: {
       flags: MessageFlags.Ephemeral,
       content: ('code' in replyResult) ? `🍥゛Gagal membalas pesan.\n\`\`\`js\n${JSON.stringify(replyResult, null, '  ')}\`\`\`` : `🦦゛Pesan dibalas!`
     }
-  }
+  }));
 };
