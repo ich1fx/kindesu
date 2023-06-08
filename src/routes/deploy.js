@@ -5,6 +5,7 @@ import {
 import {
   CookieMap,
   mergeHeaders,
+  Status
 } from 'http/server.ts';
 import * as commands from '../commands/mod.js';
 
@@ -13,12 +14,16 @@ export const path = '/deploy';
   
 export async function execute({ request, branch }) {
   const cookie = new CookieMap(request, { secure: true });
-  const isAllowed = cookies.has('allowed');
+  const isAllowed = cookie.has('allowed');
     
   if (!isAllowed) {
-    return ctx.response.redirect('/');
+    return new Response({
+      status: Status.Found,
+      headers: {
+        Location: `${request.url.origin}`
+      }
+    });
   } else {
-    const branch = ctx.request.url.host.includes('--') ? ctx.request.url.host.split('--')[1].split('.deno.dev')[0].toUpperCase() : 'PROD';
     const body = JSON.stringify(Object.values(commands).map(cmd => cmd.data));
     console.log(body);
       
@@ -31,7 +36,7 @@ export async function execute({ request, branch }) {
       body
     });
     const deployResult = await deployRequest.json();
-      
-    ctx.response.body = JSON.stringify(deployResult, null, '  ');
+    
+    return new Response(JSON.stringify(deployResult, null, '  '))
   }
 };
