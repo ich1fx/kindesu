@@ -1,6 +1,6 @@
 import {
   CookieMap
-} from 'http/server.ts';
+} from 'http/mod.ts';
 import * as routes from './mod.js';
 
 export const method = "GET";
