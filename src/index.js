@@ -1,19 +1,6 @@
-import {
-  Application,
-  Router
-} from 'oak/mod.ts';
+import { serve } from "http/server.ts";
 import * as routes from './routes/mod.js';
+h
 
-const router = new Router();
+h
 
-for (const route of Object.values(routes)) {
-  router.add(route.method, route.path, route.execute);
-};
-
-const app = new Application({ proxy: true });
-
-app.use(router.routes());
-app.use(router.allowedMethods());
-
-app.listen({ port: 80 });
-// listening to 8080
