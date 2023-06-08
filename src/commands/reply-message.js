@@ -17,7 +17,7 @@ export const data = {
 export async function execute({ ctx, interaction, branch }) {
   const [targetId, target] = Object.entries(interaction.data.resolved.messages)[0];
     
-  ctx.response.body = {
+  return new Response(JSON.stringify({
     type: InteractionResponseType.Modal,
     data: {
       title: '🍥゛Bales pesan (⁠*⁠´⁠ω⁠｀⁠*⁠)',
@@ -37,5 +37,5 @@ export async function execute({ ctx, interaction, branch }) {
         }
       ]
     }
-  };
+  }));
 };
