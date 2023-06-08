@@ -1,16 +1,20 @@
+import {
+  CookieMap
+} from 'http/server.ts';
 import * as routes from './mod.js';
 
 export const method = "GET";
 export const path = "/";
 
-export async function execute(ctx) {
-  const isAllowed = await ctx.cookies.get('allowed');
+export async function execute({ request, branch }) {
+  const cookie = new CookieMap(request, { secure: true });
+  const isAllowed = cookie.has('allowed');
     
   if (isAllowed) {
     const routesPaths = Object.entries(routes).filter(([route, data]) => (data.method === 'GET') && !['/', `/${Deno.env.get('SECRET')}`].includes(data.path));
-    ctx.response.body = JSON.stringify(Object.fromEntries(routesPaths.map(([route, data]) => [route, data.path])), null, '  ');
+    return new Response(JSON.stringify(Object.fromEntries(routesPaths.map(([route, data]) => [route, data.path])), null, '  '));
   } else {
     console.log(`[secret request: ${ctx.request.ip}]: ${Deno.env.get('SECRET')}`)
-    ctx.response.body = JSON.stringify({ message: `Kamu tidak terautentikasi nih, masukkan kode secret pada url ini (${ctx.request.url.origin + "/<secret>"})` }, null, "  ");
+    return new Response(JSON.stringify({ message: `Kamu tidak terautentikasi nih, masukkan kode secret pada url ini (${ctx.request.url.origin + "/<secret>"})` }, null, "  "));
   }
 };
