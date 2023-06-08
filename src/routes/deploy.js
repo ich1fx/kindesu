@@ -2,13 +2,18 @@ import {
   RouteBases,
   Routes
 } from 'discord_api_types/v10.ts';
+import {
+  CookieMap,
+  mergeHeaders,
+} from 'http/server.ts';
 import * as commands from '../commands/mod.js';
 
 export const method = 'GET';
 export const path = '/deploy';
   
-export async function execute(ctx) {
-  const isAllowed = await ctx.cookies.has('allowed');
+export async function execute({ request, branch }) {
+  const cookie = new CookieMap(request, { secure: true });
+  const isAllowed = cookies.has('allowed');
     
   if (!isAllowed) {
     return ctx.response.redirect('/');
