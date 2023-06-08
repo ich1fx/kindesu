@@ -6,7 +6,7 @@ import {
   CookieMap,
   mergeHeaders,
   Status
-} from 'http/server.ts';
+} from 'http/mod.ts';
 import * as commands from '../commands/mod.js';
 
 export const method = 'GET';
