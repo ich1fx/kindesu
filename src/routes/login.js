@@ -9,7 +9,7 @@ export const path = `/${Deno.env.get('SECRET')}`;
 export async function execute({ request, branch }) {
   const cookie = new CookieMap(request, { secure: true });
   await cookie.set('allowed', 'true');
-  ctx.response.redirect('/');
+ 
   return new Response("Redirecting",
     status: Status.Found,
     headers: mergeHeaders({ Location: request.url.origin }, cookie)
